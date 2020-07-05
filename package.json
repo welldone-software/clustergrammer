@@ -36,6 +36,7 @@
     "jquery": "1.11.0",
     "mathjs": "3.17.0",
     "save-svg-as-png": "^1.1.0",
+    "serve": "^11.3.2",
     "style-loader": "^0.13.1",
     "underscore": "1.8.3"
   }

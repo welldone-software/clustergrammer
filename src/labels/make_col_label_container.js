@@ -39,7 +39,7 @@ module.exports = function make_col_label_container(cgm, text_delay = 0) {
       .append('g')
       .attr('class','col_label_outer_container')
       // position the outer col label group
-      .attr('transform', 'translate(0,' + params.viz.norm_labels.width.col + ')')
+      .attr('transform', 'translate(-20,' + params.viz.norm_labels.width.col + ')')
       .append('g')
       .attr('class', 'col_zoom_container');
 
@@ -134,16 +134,16 @@ module.exports = function make_col_label_container(cgm, text_delay = 0) {
   make_col_tooltips(params);
 
   // add triangle under rotated labels
-  col_label_group
-    .append('path')
-    .style('stroke-width', 0)
-    .attr('d', function() {
-      return col_viz_aid_triangle(params);
-    })
-    .attr('fill', '#eee')
-    .style('opacity',0)
-    .transition().delay(text_delay).duration(text_delay)
-    .style('opacity', params.viz.triangle_opacity);
+  // col_label_group
+  //   .append('path')
+  //   .style('stroke-width', 0)
+  //   .attr('d', function() {
+  //     return col_viz_aid_triangle(params);
+  //   })
+  //   .attr('fill', '#eee')
+  //   .style('opacity',0)
+  //   .transition().delay(text_delay).duration(text_delay)
+  //   .style('opacity', params.viz.triangle_opacity);
 
   // add col callback function
   d3.selectAll(params.root+' .col_label_text')

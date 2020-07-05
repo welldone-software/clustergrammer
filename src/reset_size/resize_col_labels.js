@@ -59,7 +59,7 @@ module.exports = function(params, ini_svg_group, delay_info=false){
   svg_group
     .select(params.root+' .col_container')
     .select('.col_label_outer_container')
-    .attr('transform', 'translate(0,' + params.viz.norm_labels.width.col + ')');
+    .attr('transform', 'translate(-20,' + params.viz.norm_labels.width.col + ')');
 
 
   svg_group

@@ -8,7 +8,7 @@ module.exports = function resize_containers(params){
 
   // reposition col container
   d3.select(params.root+' .col_label_outer_container')
-    .attr('transform', 'translate(0,' + params.viz.norm_labels.width.col + ')');
+    .attr('transform', 'translate(-20,' + params.viz.norm_labels.width.col + ')');
 
   // reposition col_viz container
   d3.select(params.root+' .col_cat_outer_container')

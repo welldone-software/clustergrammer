@@ -48,31 +48,31 @@ var Clustergrammer =
 	var make_config = __webpack_require__(1);
 	var make_params = __webpack_require__(10);
 	var make_viz = __webpack_require__(89);
-	var resize_viz = __webpack_require__(154);
-	var play_demo = __webpack_require__(197);
-	var ini_demo = __webpack_require__(237);
-	var filter_viz_using_nodes = __webpack_require__(240);
-	var filter_viz_using_names = __webpack_require__(241);
-	var update_cats = __webpack_require__(242);
-	var reset_cats = __webpack_require__(243);
-	var two_translate_zoom = __webpack_require__(146);
-	var update_view = __webpack_require__(245);
-	var save_matrix = __webpack_require__(248);
-	var brush_crop_matrix = __webpack_require__(252);
-	var run_zoom = __webpack_require__(155);
-	var d3_tip_custom = __webpack_require__(100);
-	var all_reorder = __webpack_require__(145);
-	var make_matrix_string = __webpack_require__(250);
+	var resize_viz = __webpack_require__(155);
+	var play_demo = __webpack_require__(198);
+	var ini_demo = __webpack_require__(238);
+	var filter_viz_using_nodes = __webpack_require__(241);
+	var filter_viz_using_names = __webpack_require__(242);
+	var update_cats = __webpack_require__(243);
+	var reset_cats = __webpack_require__(244);
+	var two_translate_zoom = __webpack_require__(147);
+	var update_view = __webpack_require__(246);
+	var save_matrix = __webpack_require__(249);
+	var brush_crop_matrix = __webpack_require__(253);
+	var run_zoom = __webpack_require__(156);
+	var d3_tip_custom = __webpack_require__(101);
+	var all_reorder = __webpack_require__(146);
+	var make_matrix_string = __webpack_require__(251);
 
 	// moved d3.slider to src
-	d3.slider = __webpack_require__(254);
+	d3.slider = __webpack_require__(255);
 
 	/* eslint-disable */
 
-	var awesomplete = __webpack_require__(256);
+	var awesomplete = __webpack_require__(257);
 	// getting css from src
-	__webpack_require__(257);
-	__webpack_require__(261);
+	__webpack_require__(258);
+	__webpack_require__(262);
 
 	/* clustergrammer v1.19.5
 	 * Nicolas Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
@@ -104,7 +104,7 @@ var Clustergrammer =
 	  cgm.params.zoom_behavior.translate([cgm.params.viz.clust.margin.left, cgm.params.viz.clust.margin.top]);
 
 	  if (cgm.params.use_sidebar) {
-	    var make_sidebar = __webpack_require__(263);
+	    var make_sidebar = __webpack_require__(264);
 	    make_sidebar(cgm);
 	  }
 
@@ -14233,21 +14233,21 @@ var Clustergrammer =
 /***/ (function(module, exports, __webpack_require__) {
 
 	var generate_matrix = __webpack_require__(90);
-	var make_row_label_container = __webpack_require__(101);
-	var make_col_label_container = __webpack_require__(133);
-	var generate_super_labels = __webpack_require__(141);
-	var spillover = __webpack_require__(142);
-	var initialize_resizing = __webpack_require__(153);
-	var ini_doubleclick = __webpack_require__(163);
-	var make_col_cat = __webpack_require__(185);
-	var make_row_cat = __webpack_require__(190);
-	var trim_text = __webpack_require__(148);
-	var make_row_dendro = __webpack_require__(191);
-	var make_col_dendro = __webpack_require__(192);
-	var build_dendro_sliders = __webpack_require__(193);
+	var make_row_label_container = __webpack_require__(102);
+	var make_col_label_container = __webpack_require__(134);
+	var generate_super_labels = __webpack_require__(142);
+	var spillover = __webpack_require__(143);
+	var initialize_resizing = __webpack_require__(154);
+	var ini_doubleclick = __webpack_require__(164);
+	var make_col_cat = __webpack_require__(186);
+	var make_row_cat = __webpack_require__(191);
+	var trim_text = __webpack_require__(149);
+	var make_row_dendro = __webpack_require__(192);
+	var make_col_dendro = __webpack_require__(193);
+	var build_dendro_sliders = __webpack_require__(194);
 	// var build_tree_icon = require('./menus/build_tree_icon');
 	// var build_filter_icon = require('./menus/build_filter_icon');
-	var make_row_dendro_spillover = __webpack_require__(196);
+	var make_row_dendro_spillover = __webpack_require__(197);
 	var underscore = __webpack_require__(3);
 
 	module.exports = function make_viz(cgm) {
@@ -14555,7 +14555,7 @@ var Clustergrammer =
 /***/ (function(module, exports, __webpack_require__) {
 
 	var make_simple_rows = __webpack_require__(94);
-	var d3_tip_custom = __webpack_require__(100);
+	var d3_tip_custom = __webpack_require__(101);
 	var underscore = __webpack_require__(3);
 
 	// current matrix can change with downsampling
@@ -14638,11 +14638,11 @@ var Clustergrammer =
 	var draw_dn_tile = __webpack_require__(96);
 	var mouseover_tile = __webpack_require__(97);
 	var mouseout_tile = __webpack_require__(98);
-	var fine_position_tile = __webpack_require__(99);
+	var mouseclick_tile = __webpack_require__(99);
+	var fine_position_tile = __webpack_require__(100);
 	var underscore = __webpack_require__(3);
 
 	module.exports = function make_simple_rows(params, inst_data, tip, row_selection, ds_level = -1) {
-
 	  var inp_row_data = inst_data.row_data;
 
 	  var make_tip = true;
@@ -14696,7 +14696,12 @@ var Clustergrammer =
 	  });
 
 	  if (make_tip) {
-	    tile.on('mouseover', function () {
+	    tile.on('click', function (...args) {
+	      for (var inst_len = arguments.length, args = Array(inst_len), inst_key = 0; inst_key < inst_len; inst_key++) {
+	        args[inst_key] = arguments[inst_key];
+	      }
+	      mouseclick_tile(params, this, tip, args);
+	    }).on('mouseover', function () {
 	      for (var inst_len = arguments.length, args = Array(inst_len), inst_key = 0; inst_key < inst_len; inst_key++) {
 	        args[inst_key] = arguments[inst_key];
 	      }
@@ -14747,9 +14752,7 @@ var Clustergrammer =
 	  //     return fine_position_tile(params, d);
 	  //   });
 
-
 	  if (params.matrix.tile_type == 'updn') {
-
 	    // value split
 	    var row_split_data = underscore.filter(inp_row_data, function (num) {
 	      return num.value_up != 0 || num.value_dn != 0;
@@ -14812,7 +14815,7 @@ var Clustergrammer =
 	      return inst_string;
 	    });
 	  }
-		};
+	};
 
 /***/ }),
 /* 95 */
@@ -14928,6 +14931,72 @@ var Clustergrammer =
 
 /***/ }),
 /* 99 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var underscore = __webpack_require__(3);
+
+	module.exports = function mouseclick_tile(params, inst_selection, tip, inst_arguments) {
+	  var inst_data = inst_arguments[0];
+	  var args = [].slice.call(inst_arguments);
+	  //   var timeout;
+	  //   var delay = 1000;
+
+	  //   d3.select(inst_selection).classed("hovering", true);
+
+	  //   underscore.each(["row", "col"], function (inst_rc) {
+	  //     d3.selectAll(params.root + " ." + inst_rc + "_label_group text").style(
+	  //       "font-weight",
+	  //       function (d) {
+	  //         var font_weight;
+	  //         var inst_found =
+	  //           inst_data[inst_rc + "_name"].replace(/_/g, " ") === d.name;
+
+	  //         if (inst_found) {
+	  //           font_weight = "bold";
+	  //         } else {
+	  //           font_weight = "normal";
+	  //         }
+	  //         return font_weight;
+	  //       }
+	  //     );
+	  //   });
+
+	  args.push(inst_selection);
+
+	  if (params.tile_click_callback != null) {
+	    var tile_info = args[0];
+	    params.tile_click_callback(tile_info);
+	  }
+	  //   clearTimeout(timeout);
+	  //   timeout = setTimeout(check_if_hovering, delay, inst_selection);
+
+	  //   function check_if_hovering() {
+	  //     if (d3.select(inst_selection).classed("hovering")) {
+	  //       var inst_zoom = Number(
+	  //         d3.select(params.root + " .viz_svg").attr("is_zoom")
+	  //       );
+
+	  //       if (inst_zoom === 0) {
+	  //         if (params.matrix.show_tile_tooltips && tip !== null) {
+	  //           d3.selectAll(params.viz.root_tips + "_tile_tip").style(
+	  //             "display",
+	  //             "block"
+	  //           );
+
+	  //           tip.show.apply(inst_selection, args);
+
+	  //           if (params.tile_tip_callback != null) {
+	  //             var tile_info = args[0];
+	  //             params.tile_tip_callback(tile_info);
+	  //           }
+	  //         }
+	  //       }
+	  //     }
+	  //   }
+	};
+
+/***/ }),
+/* 100 */
 /***/ (function(module, exports) {
 
 	module.exports = function fine_position_tile(params, d) {
@@ -14947,7 +15016,7 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 100 */
+/* 101 */
 /***/ (function(module, exports) {
 
 	module.exports = function d3_tip_custom() {
@@ -15303,10 +15372,10 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 101 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var make_row_labels = __webpack_require__(102);
+	var make_row_labels = __webpack_require__(103);
 
 	module.exports = function make_row_label_container(cgm, text_delay) {
 
@@ -15341,13 +15410,13 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 102 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var utils = __webpack_require__(2);
-	var add_row_click_hlight = __webpack_require__(103);
-	var row_reorder = __webpack_require__(104);
-	var make_row_tooltips = __webpack_require__(132);
+	var add_row_click_hlight = __webpack_require__(104);
+	var row_reorder = __webpack_require__(105);
+	var make_row_tooltips = __webpack_require__(133);
 	var underscore = __webpack_require__(3);
 
 	module.exports = function make_row_labels(cgm, row_names = 'all', text_delay = 0) {
@@ -15454,7 +15523,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 103 */
+/* 104 */
 /***/ (function(module, exports) {
 
 	module.exports = function (params, clicked_row, id_clicked_row) {
@@ -15486,13 +15555,13 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 104 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var reposition_tile_highlight = __webpack_require__(105);
-	var toggle_dendro_view = __webpack_require__(106);
+	var reposition_tile_highlight = __webpack_require__(106);
+	var toggle_dendro_view = __webpack_require__(107);
 	var ini_zoom_info = __webpack_require__(88);
-	var get_previous_zoom = __webpack_require__(131);
+	var get_previous_zoom = __webpack_require__(132);
 	var calc_downsampled_levels = __webpack_require__(79);
 	var underscore = __webpack_require__(3);
 
@@ -15616,7 +15685,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 105 */
+/* 106 */
 /***/ (function(module, exports) {
 
 	module.exports = function (params) {
@@ -15657,10 +15726,10 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 106 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var make_dendro_triangles = __webpack_require__(107);
+	var make_dendro_triangles = __webpack_require__(108);
 
 	module.exports = function toggle_dendro_view(cgm, inst_rc, wait_time = 1500) {
 
@@ -15702,15 +15771,15 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 107 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var calc_row_dendro_triangles = __webpack_require__(108);
-	var calc_col_dendro_triangles = __webpack_require__(109);
-	var dendro_group_highlight = __webpack_require__(110);
-	var d3_tip_custom = __webpack_require__(100);
-	var make_dendro_crop_buttons = __webpack_require__(112);
-	var make_cat_breakdown_graph = __webpack_require__(115);
+	var calc_row_dendro_triangles = __webpack_require__(109);
+	var calc_col_dendro_triangles = __webpack_require__(110);
+	var dendro_group_highlight = __webpack_require__(111);
+	var d3_tip_custom = __webpack_require__(101);
+	var make_dendro_crop_buttons = __webpack_require__(113);
+	var make_cat_breakdown_graph = __webpack_require__(116);
 
 	module.exports = function make_dendro_triangles(cgm, inst_rc, is_change_group = false) {
 
@@ -15917,7 +15986,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 108 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var underscore = __webpack_require__(3);
@@ -15975,7 +16044,7 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 109 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var underscore = __webpack_require__(3);
@@ -16031,10 +16100,10 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 110 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var dendro_shade_bars = __webpack_require__(111);
+	var dendro_shade_bars = __webpack_require__(112);
 
 	module.exports = function dendro_group_highlight(params, inst_selection, inst_data, inst_rc) {
 
@@ -16089,7 +16158,7 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 111 */
+/* 112 */
 /***/ (function(module, exports) {
 
 	module.exports = function dendro_shade_bars(params, inst_selection, inst_rc, inst_data) {
@@ -16119,15 +16188,15 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 112 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var calc_row_dendro_triangles = __webpack_require__(108);
-	var calc_col_dendro_triangles = __webpack_require__(109);
-	var d3_tip_custom = __webpack_require__(100);
-	var dendro_group_highlight = __webpack_require__(110);
-	var run_dendro_filter = __webpack_require__(113);
-	var zoom_crop_triangles = __webpack_require__(114);
+	var calc_row_dendro_triangles = __webpack_require__(109);
+	var calc_col_dendro_triangles = __webpack_require__(110);
+	var d3_tip_custom = __webpack_require__(101);
+	var dendro_group_highlight = __webpack_require__(111);
+	var run_dendro_filter = __webpack_require__(114);
+	var zoom_crop_triangles = __webpack_require__(115);
 
 	module.exports = function make_dendro_crop_buttons(cgm, inst_rc) {
 
@@ -16418,7 +16487,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 113 */
+/* 114 */
 /***/ (function(module, exports) {
 
 	module.exports = function run_dendro_filter(cgm, d, inst_rc) {
@@ -16459,7 +16528,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 114 */
+/* 115 */
 /***/ (function(module, exports) {
 
 	module.exports = function zoom_crop_triangles(params, zoom_info, inst_rc) {
@@ -16502,13 +16571,13 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 115 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var calc_cat_cluster_breakdown = __webpack_require__(116);
+	var calc_cat_cluster_breakdown = __webpack_require__(117);
 	var underscore = __webpack_require__(3);
-	var cat_breakdown_bars = __webpack_require__(129);
-	var cat_breakdown_values = __webpack_require__(130);
+	var cat_breakdown_bars = __webpack_require__(130);
+	var cat_breakdown_values = __webpack_require__(131);
 
 	module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, dendro_info, selector, tooltip = false) {
 
@@ -16668,10 +16737,10 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 116 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var binom_test = __webpack_require__(117);
+	var binom_test = __webpack_require__(118);
 	var underscore = __webpack_require__(3);
 
 	module.exports = function calc_cat_cluster_breakdown(params, inst_data, inst_rc) {
@@ -16874,7 +16943,7 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 117 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	
@@ -16882,11 +16951,11 @@ var Clustergrammer =
 	// Create a new, empty math.js instance
 	// It will only contain methods `import` and `config`
 	// math.import(require('mathjs/lib/type/fraction'));
-	var p_dict = __webpack_require__(118);
+	var p_dict = __webpack_require__(119);
 	var core = __webpack_require__(13);
 	var math = core.create();
 
-	math.import(__webpack_require__(119));
+	math.import(__webpack_require__(120));
 
 	module.exports = function binom_test(actual_k, n, p) {
 
@@ -16961,7 +17030,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 118 */
+/* 119 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -16970,15 +17039,15 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 119 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var deepMap = __webpack_require__(120);
+	var deepMap = __webpack_require__(121);
 
 	function factory(type, config, load, typed) {
-	  var gamma = load(__webpack_require__(121));
+	  var gamma = load(__webpack_require__(122));
 	  var latex = __webpack_require__(46);
 
 	  /**
@@ -17036,7 +17105,7 @@ var Clustergrammer =
 	exports.factory = factory;
 
 /***/ }),
-/* 120 */
+/* 121 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -17066,17 +17135,17 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 121 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var deepMap = __webpack_require__(120);
+	var deepMap = __webpack_require__(121);
 	var isInteger = __webpack_require__(19).isInteger;
 
 	function factory(type, config, load, typed) {
-	  var multiply = load(__webpack_require__(122));
-	  var pow = load(__webpack_require__(125));
+	  var multiply = load(__webpack_require__(123));
+	  var pow = load(__webpack_require__(126));
 
 	  /**
 	   * Compute the gamma function of a value using Lanczos approximation for
@@ -17252,7 +17321,7 @@ var Clustergrammer =
 	exports.factory = factory;
 
 /***/ }),
-/* 122 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -17265,10 +17334,10 @@ var Clustergrammer =
 
 	  var matrix = load(__webpack_require__(44));
 	  var addScalar = load(__webpack_require__(45));
-	  var multiplyScalar = load(__webpack_require__(123));
+	  var multiplyScalar = load(__webpack_require__(124));
 	  var equalScalar = load(__webpack_require__(40));
 
-	  var algorithm11 = load(__webpack_require__(124));
+	  var algorithm11 = load(__webpack_require__(125));
 	  var algorithm14 = load(__webpack_require__(51));
 
 	  var DenseMatrix = type.DenseMatrix;
@@ -18218,7 +18287,7 @@ var Clustergrammer =
 	exports.factory = factory;
 
 /***/ }),
-/* 123 */
+/* 124 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -18280,7 +18349,7 @@ var Clustergrammer =
 	exports.factory = factory;
 
 /***/ }),
-/* 124 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -18393,7 +18462,7 @@ var Clustergrammer =
 	exports.factory = factory;
 
 /***/ }),
-/* 125 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -18403,11 +18472,11 @@ var Clustergrammer =
 
 	function factory(type, config, load, typed) {
 	  var latex = __webpack_require__(46);
-	  var eye = load(__webpack_require__(126));
-	  var multiply = load(__webpack_require__(122));
+	  var eye = load(__webpack_require__(127));
+	  var multiply = load(__webpack_require__(123));
 	  var matrix = load(__webpack_require__(44));
-	  var fraction = load(__webpack_require__(127));
-	  var number = load(__webpack_require__(128));
+	  var fraction = load(__webpack_require__(128));
+	  var number = load(__webpack_require__(129));
 
 	  /**
 	   * Calculates the power of x to y, `x ^ y`.
@@ -18588,7 +18657,7 @@ var Clustergrammer =
 	exports.factory = factory;
 
 /***/ }),
-/* 126 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -18739,12 +18808,12 @@ var Clustergrammer =
 	exports.factory = factory;
 
 /***/ }),
-/* 127 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var deepMap = __webpack_require__(120);
+	var deepMap = __webpack_require__(121);
 
 	function factory(type, config, load, typed) {
 	  /**
@@ -18813,12 +18882,12 @@ var Clustergrammer =
 	exports.factory = factory;
 
 /***/ }),
-/* 128 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var deepMap = __webpack_require__(120);
+	var deepMap = __webpack_require__(121);
 
 	function factory(type, config, load, typed) {
 	  /**
@@ -18897,7 +18966,7 @@ var Clustergrammer =
 	exports.factory = factory;
 
 /***/ }),
-/* 129 */
+/* 130 */
 /***/ (function(module, exports) {
 
 	module.exports = function cat_breakdown_bars(params, cat_data, cat_graph_group, title_height, bars_index, max_bars, cat_bar_groups) {
@@ -18961,7 +19030,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 130 */
+/* 131 */
 /***/ (function(module, exports) {
 
 	module.exports = function cat_breakdown_values(params, cat_graph_group, cat_bar_groups, num_nodes_index, is_downsampled, count_offset, bars_index, cluster_total) {
@@ -19063,7 +19132,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 131 */
+/* 132 */
 /***/ (function(module, exports) {
 
 	module.exports = function get_previous_zoom(params) {
@@ -19091,10 +19160,10 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 132 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var d3_tip_custom = __webpack_require__(100);
+	var d3_tip_custom = __webpack_require__(101);
 
 	module.exports = function make_row_tooltips(params) {
 
@@ -19148,15 +19217,15 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 133 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var utils = __webpack_require__(2);
-	var add_col_click_hlight = __webpack_require__(134);
-	var col_reorder = __webpack_require__(135);
-	var row_reorder = __webpack_require__(104);
-	var make_col_tooltips = __webpack_require__(139);
-	var col_viz_aid_triangle = __webpack_require__(140);
+	var add_col_click_hlight = __webpack_require__(135);
+	var col_reorder = __webpack_require__(136);
+	var row_reorder = __webpack_require__(105);
+	var make_col_tooltips = __webpack_require__(140);
+	var col_viz_aid_triangle = __webpack_require__(141);
 
 	module.exports = function make_col_label_container(cgm, text_delay = 0) {
 
@@ -19182,7 +19251,7 @@ var Clustergrammer =
 	    // col labels
 	    col_container.append('g').attr('class', 'col_label_outer_container')
 	    // position the outer col label group
-	    .attr('transform', 'translate(0,' + params.viz.norm_labels.width.col + ')').append('g').attr('class', 'col_zoom_container');
+	    .attr('transform', 'translate(-20,' + params.viz.norm_labels.width.col + ')').append('g').attr('class', 'col_zoom_container');
 	  } else {
 
 	    col_container = d3.select(params.root + ' .col_container').attr('transform', 'translate(' + params.viz.clust.margin.left + ',' + params.viz.norm_labels.margin.top + ')');
@@ -19246,9 +19315,16 @@ var Clustergrammer =
 	  make_col_tooltips(params);
 
 	  // add triangle under rotated labels
-	  col_label_group.append('path').style('stroke-width', 0).attr('d', function () {
-	    return col_viz_aid_triangle(params);
-	  }).attr('fill', '#eee').style('opacity', 0).transition().delay(text_delay).duration(text_delay).style('opacity', params.viz.triangle_opacity);
+	  // col_label_group
+	  //   .append('path')
+	  //   .style('stroke-width', 0)
+	  //   .attr('d', function() {
+	  //     return col_viz_aid_triangle(params);
+	  //   })
+	  //   .attr('fill', '#eee')
+	  //   .style('opacity',0)
+	  //   .transition().delay(text_delay).duration(text_delay)
+	  //   .style('opacity', params.viz.triangle_opacity);
 
 	  // add col callback function
 	  d3.selectAll(params.root + ' .col_label_text').on('click', function (d) {
@@ -19286,7 +19362,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 134 */
+/* 135 */
 /***/ (function(module, exports) {
 
 	module.exports = function (params, clicked_col, id_clicked_col) {
@@ -19331,15 +19407,15 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 135 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// var utils = require('../Utils_clust');
-	var reposition_tile_highlight = __webpack_require__(105);
-	var toggle_dendro_view = __webpack_require__(106);
-	var show_visible_area = __webpack_require__(136);
+	var reposition_tile_highlight = __webpack_require__(106);
+	var toggle_dendro_view = __webpack_require__(107);
+	var show_visible_area = __webpack_require__(137);
 	var ini_zoom_info = __webpack_require__(88);
-	var get_previous_zoom = __webpack_require__(131);
+	var get_previous_zoom = __webpack_require__(132);
 	var calc_downsampled_levels = __webpack_require__(79);
 	var underscore = __webpack_require__(3);
 
@@ -19459,13 +19535,13 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 136 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var find_viz_rows = __webpack_require__(137);
+	var find_viz_rows = __webpack_require__(138);
 	var make_matrix_rows = __webpack_require__(93);
-	var make_row_labels = __webpack_require__(102);
-	var make_row_visual_aid_triangles = __webpack_require__(138);
+	var make_row_labels = __webpack_require__(103);
+	var make_row_visual_aid_triangles = __webpack_require__(139);
 	var underscore = __webpack_require__(3);
 
 	module.exports = function show_visible_area(cgm, zooming_stopped = false, zooming_out = false, make_all_rows = false) {
@@ -19664,7 +19740,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 137 */
+/* 138 */
 /***/ (function(module, exports) {
 
 	module.exports = function find_viz_rows(params, viz_area) {
@@ -19708,7 +19784,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 138 */
+/* 139 */
 /***/ (function(module, exports) {
 
 	module.exports = function make_row_visual_aid_triangles(params) {
@@ -19728,10 +19804,10 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 139 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var d3_tip_custom = __webpack_require__(100);
+	var d3_tip_custom = __webpack_require__(101);
 
 	module.exports = function make_col_tooltips(params) {
 
@@ -19769,7 +19845,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 140 */
+/* 141 */
 /***/ (function(module, exports) {
 
 	module.exports = function col_viz_aid_triangle(params) {
@@ -19786,7 +19862,7 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 141 */
+/* 142 */
 /***/ (function(module, exports) {
 
 	module.exports = function (params) {
@@ -19828,13 +19904,13 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 142 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var get_cat_title = __webpack_require__(143);
-	var ini_cat_reorder = __webpack_require__(144);
-	var make_row_cat_super_labels = __webpack_require__(152);
-	var make_dendro_crop_buttons = __webpack_require__(112);
+	var get_cat_title = __webpack_require__(144);
+	var ini_cat_reorder = __webpack_require__(145);
+	var make_row_cat_super_labels = __webpack_require__(153);
+	var make_dendro_crop_buttons = __webpack_require__(113);
 
 	module.exports = function Spillover(cgm) {
 
@@ -19930,7 +20006,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 143 */
+/* 144 */
 /***/ (function(module, exports) {
 
 	module.exports = function get_cat_title(viz, inst_cat, inst_rc) {
@@ -19950,10 +20026,10 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 144 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var all_reorder = __webpack_require__(145);
+	var all_reorder = __webpack_require__(146);
 	var underscore = __webpack_require__(3);
 
 	module.exports = function ini_cat_reorder(cgm) {
@@ -19985,15 +20061,15 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 145 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var toggle_dendro_view = __webpack_require__(106);
-	var show_visible_area = __webpack_require__(136);
+	var toggle_dendro_view = __webpack_require__(107);
+	var show_visible_area = __webpack_require__(137);
 	var ini_zoom_info = __webpack_require__(88);
 	var calc_downsampled_levels = __webpack_require__(79);
-	var two_translate_zoom = __webpack_require__(146);
-	var get_previous_zoom = __webpack_require__(131);
+	var two_translate_zoom = __webpack_require__(147);
+	var get_previous_zoom = __webpack_require__(132);
 	var underscore = __webpack_require__(3);
 
 	module.exports = function (cgm, inst_order, inst_rc) {
@@ -20118,14 +20194,14 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 146 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var utils = __webpack_require__(2);
-	var label_constrain_and_trim = __webpack_require__(147);
-	var show_visible_area = __webpack_require__(136);
+	var label_constrain_and_trim = __webpack_require__(148);
+	var show_visible_area = __webpack_require__(137);
 	var ini_zoom_info = __webpack_require__(88);
-	var toggle_grid_lines = __webpack_require__(151);
+	var toggle_grid_lines = __webpack_require__(152);
 	var underscore = __webpack_require__(3);
 
 	module.exports = function two_translate_zoom(cgm, pan_dx, pan_dy, fin_zoom) {
@@ -20331,12 +20407,12 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 147 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var utils = __webpack_require__(2);
-	var trim_text = __webpack_require__(148);
-	var constrain_font_size = __webpack_require__(149);
+	var trim_text = __webpack_require__(149);
+	var constrain_font_size = __webpack_require__(150);
 
 	module.exports = function label_constrain_and_trim(params) {
 
@@ -20363,7 +20439,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 148 */
+/* 149 */
 /***/ (function(module, exports) {
 
 	
@@ -20474,10 +20550,10 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 149 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var calc_real_font_size = __webpack_require__(150);
+	var calc_real_font_size = __webpack_require__(151);
 
 	module.exports = function constrain_font_size(params) {
 
@@ -20541,7 +20617,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 150 */
+/* 151 */
 /***/ (function(module, exports) {
 
 	module.exports = function calc_real_font_size(params) {
@@ -20560,7 +20636,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 151 */
+/* 152 */
 /***/ (function(module, exports) {
 
 	module.exports = function toggle_grid_lines(params) {
@@ -20579,11 +20655,11 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 152 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var get_cat_title = __webpack_require__(143);
-	var d3_tip_custom = __webpack_require__(100);
+	var get_cat_title = __webpack_require__(144);
+	var d3_tip_custom = __webpack_require__(101);
 
 	module.exports = function make_row_cat_super_labels(cgm) {
 
@@ -20722,10 +20798,10 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 153 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var resize_viz = __webpack_require__(154);
+	var resize_viz = __webpack_require__(155);
 
 	module.exports = function initialize_resizing(cgm) {
 
@@ -20818,41 +20894,41 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 154 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var utils = __webpack_require__(2);
-	var run_zoom = __webpack_require__(155);
-	var ini_doubleclick = __webpack_require__(163);
-	var reset_zoom = __webpack_require__(164);
-	var resize_dendro = __webpack_require__(165);
-	var resize_super_labels = __webpack_require__(166);
-	var resize_spillover = __webpack_require__(167);
-	var resize_borders = __webpack_require__(168);
-	var resize_row_labels = __webpack_require__(169);
-	var resize_highlights = __webpack_require__(170);
-	var resize_row_viz = __webpack_require__(171);
-	var resize_col_labels = __webpack_require__(172);
-	var resize_col_text = __webpack_require__(173);
-	var resize_col_triangle = __webpack_require__(174);
-	var resize_col_hlight = __webpack_require__(175);
-	var recalc_params_for_resize = __webpack_require__(176);
-	var resize_row_tiles = __webpack_require__(177);
-	var resize_label_bars = __webpack_require__(178);
-	var label_constrain_and_trim = __webpack_require__(147);
-	var make_dendro_triangles = __webpack_require__(107);
-	var toggle_dendro_view = __webpack_require__(106);
-	var show_visible_area = __webpack_require__(136);
+	var run_zoom = __webpack_require__(156);
+	var ini_doubleclick = __webpack_require__(164);
+	var reset_zoom = __webpack_require__(165);
+	var resize_dendro = __webpack_require__(166);
+	var resize_super_labels = __webpack_require__(167);
+	var resize_spillover = __webpack_require__(168);
+	var resize_borders = __webpack_require__(169);
+	var resize_row_labels = __webpack_require__(170);
+	var resize_highlights = __webpack_require__(171);
+	var resize_row_viz = __webpack_require__(172);
+	var resize_col_labels = __webpack_require__(173);
+	var resize_col_text = __webpack_require__(174);
+	var resize_col_triangle = __webpack_require__(175);
+	var resize_col_hlight = __webpack_require__(176);
+	var recalc_params_for_resize = __webpack_require__(177);
+	var resize_row_tiles = __webpack_require__(178);
+	var resize_label_bars = __webpack_require__(179);
+	var label_constrain_and_trim = __webpack_require__(148);
+	var make_dendro_triangles = __webpack_require__(108);
+	var toggle_dendro_view = __webpack_require__(107);
+	var show_visible_area = __webpack_require__(137);
 	var calc_viz_dimensions = __webpack_require__(70);
-	var position_play_button = __webpack_require__(179);
-	var make_row_cat_super_labels = __webpack_require__(152);
-	var ini_cat_reorder = __webpack_require__(144);
-	var position_dendro_slider = __webpack_require__(180);
-	var position_tree_icon = __webpack_require__(181);
-	var position_filter_icon = __webpack_require__(182);
-	var position_tree_menu = __webpack_require__(183);
+	var position_play_button = __webpack_require__(180);
+	var make_row_cat_super_labels = __webpack_require__(153);
+	var ini_cat_reorder = __webpack_require__(145);
+	var position_dendro_slider = __webpack_require__(181);
+	var position_tree_icon = __webpack_require__(182);
+	var position_filter_icon = __webpack_require__(183);
+	var position_tree_menu = __webpack_require__(184);
 	var ini_zoom_info = __webpack_require__(88);
-	var grid_lines_viz = __webpack_require__(184);
+	var grid_lines_viz = __webpack_require__(185);
 	var underscore = __webpack_require__(3);
 
 	module.exports = function resize_viz(cgm) {
@@ -21013,12 +21089,12 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 155 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var run_transformation = __webpack_require__(156);
-	var zoom_rules_y = __webpack_require__(161);
-	var zoom_rules_x = __webpack_require__(162);
+	var run_transformation = __webpack_require__(157);
+	var zoom_rules_y = __webpack_require__(162);
+	var zoom_rules_x = __webpack_require__(163);
 
 	module.exports = function zoomed(cgm) {
 
@@ -21053,16 +21129,16 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 156 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var constrain_font_size = __webpack_require__(149);
-	var show_visible_area = __webpack_require__(136);
-	var resize_label_val_bars = __webpack_require__(157);
-	var zoom_crop_triangles = __webpack_require__(114);
-	var get_previous_zoom = __webpack_require__(131);
-	var run_when_zoom_stopped = __webpack_require__(158);
-	var check_zoom_stop_status = __webpack_require__(160);
+	var constrain_font_size = __webpack_require__(150);
+	var show_visible_area = __webpack_require__(137);
+	var resize_label_val_bars = __webpack_require__(158);
+	var zoom_crop_triangles = __webpack_require__(115);
+	var get_previous_zoom = __webpack_require__(132);
+	var run_when_zoom_stopped = __webpack_require__(159);
+	var check_zoom_stop_status = __webpack_require__(161);
 
 	module.exports = function run_transformation(cgm) {
 
@@ -21154,7 +21230,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 157 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var utils = __webpack_require__(2);
@@ -21188,15 +21264,15 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 158 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var constrain_font_size = __webpack_require__(149);
-	var trim_text = __webpack_require__(148);
-	var num_visible_labels = __webpack_require__(159);
-	var toggle_grid_lines = __webpack_require__(151);
-	var show_visible_area = __webpack_require__(136);
-	var check_zoom_stop_status = __webpack_require__(160);
+	var constrain_font_size = __webpack_require__(150);
+	var trim_text = __webpack_require__(149);
+	var num_visible_labels = __webpack_require__(160);
+	var toggle_grid_lines = __webpack_require__(152);
+	var show_visible_area = __webpack_require__(137);
+	var check_zoom_stop_status = __webpack_require__(161);
 	var underscore = __webpack_require__(3);
 
 	module.exports = function run_when_zoom_stopped(cgm) {
@@ -21276,7 +21352,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 159 */
+/* 160 */
 /***/ (function(module, exports) {
 
 	module.exports = function num_visible_labels(params, inst_rc) {
@@ -21304,7 +21380,7 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 160 */
+/* 161 */
 /***/ (function(module, exports) {
 
 	module.exports = function check_zoom_stop_status(params) {
@@ -21322,7 +21398,7 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 161 */
+/* 162 */
 /***/ (function(module, exports) {
 
 	module.exports = function zoom_rules_y(params, zoom_info) {
@@ -21356,7 +21432,7 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 162 */
+/* 163 */
 /***/ (function(module, exports) {
 
 	module.exports = function zoom_rules_x(params, zoom_info) {
@@ -21400,10 +21476,10 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 163 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var two_translate_zoom = __webpack_require__(146);
+	var two_translate_zoom = __webpack_require__(147);
 
 	module.exports = function ini_doubleclick(cgm) {
 
@@ -21417,7 +21493,7 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 164 */
+/* 165 */
 /***/ (function(module, exports) {
 
 	module.exports = function (params) {
@@ -21459,7 +21535,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 165 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var underscore = __webpack_require__(3);
@@ -21567,7 +21643,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 166 */
+/* 167 */
 /***/ (function(module, exports) {
 
 	module.exports = function resize_super_labels(params, ini_svg_group, delay_info = false) {
@@ -21607,7 +21683,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 167 */
+/* 168 */
 /***/ (function(module, exports) {
 
 	module.exports = function resize_spillover(viz, ini_svg_group, delay_info = false) {
@@ -21725,7 +21801,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 168 */
+/* 169 */
 /***/ (function(module, exports) {
 
 	module.exports = function resize_borders(params, svg_group) {
@@ -21753,7 +21829,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 169 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var underscore = __webpack_require__(3);
@@ -21807,7 +21883,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 170 */
+/* 171 */
 /***/ (function(module, exports) {
 
 	module.exports = function resize_highlights(params) {
@@ -21870,7 +21946,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 171 */
+/* 172 */
 /***/ (function(module, exports) {
 
 	module.exports = function resize_row_viz(params, ini_svg_group, delay_info = false) {
@@ -21910,7 +21986,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 172 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var underscore = __webpack_require__(3);
@@ -21957,7 +22033,7 @@ var Clustergrammer =
 
 	  svg_group.select(params.root + ' .col_container').select('.white_bars').attr('width', 30 * params.viz.clust.dim.width + 'px').attr('height', params.viz.label_background.col);
 
-	  svg_group.select(params.root + ' .col_container').select('.col_label_outer_container').attr('transform', 'translate(0,' + params.viz.norm_labels.width.col + ')');
+	  svg_group.select(params.root + ' .col_container').select('.col_label_outer_container').attr('transform', 'translate(-20,' + params.viz.norm_labels.width.col + ')');
 
 	  svg_group.selectAll('.col_label_group').attr('transform', 'translate(' + params.viz.x_scale.rangeBand() / 2 + ',' + x_offset_click + ') rotate(45)');
 
@@ -21965,7 +22041,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 173 */
+/* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var utils = __webpack_require__(2);
@@ -21981,10 +22057,10 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 174 */
+/* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var col_viz_aid_triangle = __webpack_require__(140);
+	var col_viz_aid_triangle = __webpack_require__(141);
 
 	module.exports = function resize_col_triangle(params, ini_svg_group, delay_info = false) {
 
@@ -22013,7 +22089,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 175 */
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var utils = __webpack_require__(2);
@@ -22048,7 +22124,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 176 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var get_svg_dim = __webpack_require__(71);
@@ -22116,12 +22192,12 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 177 */
+/* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var draw_up_tile = __webpack_require__(95);
 	var draw_dn_tile = __webpack_require__(96);
-	var fine_position_tile = __webpack_require__(99);
+	var fine_position_tile = __webpack_require__(100);
 	var underscore = __webpack_require__(3);
 
 	module.exports = function resize_row_tiles(params, svg_group) {
@@ -22180,7 +22256,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 178 */
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var calc_val_max = __webpack_require__(75);
@@ -22215,7 +22291,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 179 */
+/* 180 */
 /***/ (function(module, exports) {
 
 	module.exports = function position_play_button(params) {
@@ -22233,7 +22309,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 180 */
+/* 181 */
 /***/ (function(module, exports) {
 
 	module.exports = function position_dendro_slider(cgm, inst_rc = 'row') {
@@ -22283,7 +22359,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 181 */
+/* 182 */
 /***/ (function(module, exports) {
 
 	module.exports = function position_tree_icon(cgm) {
@@ -22315,7 +22391,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 182 */
+/* 183 */
 /***/ (function(module, exports) {
 
 	module.exports = function position_filter_icon(cgm) {
@@ -22347,7 +22423,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 183 */
+/* 184 */
 /***/ (function(module, exports) {
 
 	module.exports = function position_tree_menu(cgm) {
@@ -22368,7 +22444,7 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 184 */
+/* 185 */
 /***/ (function(module, exports) {
 
 	module.exports = function grid_lines_viz(params, duration = 0) {
@@ -22405,15 +22481,15 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 185 */
+/* 186 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var cat_tooltip_text = __webpack_require__(186);
-	var d3_tip_custom = __webpack_require__(100);
-	var reset_cat_opacity = __webpack_require__(187);
-	var ini_cat_opacity = __webpack_require__(188);
+	var cat_tooltip_text = __webpack_require__(187);
+	var d3_tip_custom = __webpack_require__(101);
+	var reset_cat_opacity = __webpack_require__(188);
+	var ini_cat_opacity = __webpack_require__(189);
 	// var click_filter_cats = require('./click_filter_cats');
-	var get_cat_names = __webpack_require__(189);
+	var get_cat_names = __webpack_require__(190);
 	var underscore = __webpack_require__(3);
 
 	module.exports = function make_col_cat(cgm) {
@@ -22505,10 +22581,10 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 186 */
+/* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var get_cat_title = __webpack_require__(143);
+	var get_cat_title = __webpack_require__(144);
 	var underscore = __webpack_require__(3);
 
 	module.exports = function cat_tooltip_text(params, inst_data, inst_selection, inst_rc) {
@@ -22594,7 +22670,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 187 */
+/* 188 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var underscore = __webpack_require__(3);
@@ -22617,7 +22693,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 188 */
+/* 189 */
 /***/ (function(module, exports) {
 
 	module.exports = function ini_cat_opacity(viz, inst_rc, cat_rect, inst_cat, updating = false) {
@@ -22678,7 +22754,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 189 */
+/* 190 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var utils = __webpack_require__(2);
@@ -22701,15 +22777,15 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 190 */
+/* 191 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var cat_tooltip_text = __webpack_require__(186);
-	var d3_tip_custom = __webpack_require__(100);
-	var reset_cat_opacity = __webpack_require__(187);
-	var ini_cat_opacity = __webpack_require__(188);
+	var cat_tooltip_text = __webpack_require__(187);
+	var d3_tip_custom = __webpack_require__(101);
+	var reset_cat_opacity = __webpack_require__(188);
+	var ini_cat_opacity = __webpack_require__(189);
 	// var click_filter_cats = require('./click_filter_cats');
-	var get_cat_names = __webpack_require__(189);
+	var get_cat_names = __webpack_require__(190);
 	var underscore = __webpack_require__(3);
 
 	module.exports = function make_row_cat(cgm, updating = false) {
@@ -22825,10 +22901,10 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 191 */
+/* 192 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var make_dendro_triangles = __webpack_require__(107);
+	var make_dendro_triangles = __webpack_require__(108);
 
 	module.exports = function make_row_dendro(cgm) {
 
@@ -22862,10 +22938,10 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 192 */
+/* 193 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var make_dendro_triangles = __webpack_require__(107);
+	var make_dendro_triangles = __webpack_require__(108);
 
 	module.exports = function make_col_dendro(cgm) {
 
@@ -22901,10 +22977,10 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 193 */
+/* 194 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var build_single_dendro_slider = __webpack_require__(194);
+	var build_single_dendro_slider = __webpack_require__(195);
 
 	module.exports = function build_dendro_sliders(cgm) {
 
@@ -22913,11 +22989,11 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 194 */
+/* 195 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var change_groups = __webpack_require__(195);
-	var position_dendro_slider = __webpack_require__(180);
+	var change_groups = __webpack_require__(196);
+	var position_dendro_slider = __webpack_require__(181);
 
 	module.exports = function build_single_dendro_slider(cgm, inst_rc) {
 
@@ -23013,10 +23089,10 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 195 */
+/* 196 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var make_dendro_triangles = __webpack_require__(107);
+	var make_dendro_triangles = __webpack_require__(108);
 
 	/* Changes the groupings (x- and y-axis color bars).
 	 */
@@ -23036,10 +23112,10 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 196 */
+/* 197 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var make_dendro_crop_buttons = __webpack_require__(112);
+	var make_dendro_crop_buttons = __webpack_require__(113);
 
 	module.exports = function make_row_dendro_spillover(cgm) {
 
@@ -23077,25 +23153,25 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 197 */
+/* 198 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* eslint-disable */
 
-	var run_segment = __webpack_require__(198);
-	var play_intro = __webpack_require__(199);
-	var play_zoom = __webpack_require__(201);
-	var play_reset_zoom = __webpack_require__(202);
-	var play_reorder_row = __webpack_require__(204);
-	var play_reorder_buttons = __webpack_require__(205);
-	var play_search = __webpack_require__(207);
-	var play_filter = __webpack_require__(208);
-	var quick_cluster = __webpack_require__(231);
-	var play_groups = __webpack_require__(232);
-	var play_categories = __webpack_require__(233);
-	var play_conclusion = __webpack_require__(234);
-	var toggle_play_button = __webpack_require__(235);
-	var play_menu_button = __webpack_require__(236);
+	var run_segment = __webpack_require__(199);
+	var play_intro = __webpack_require__(200);
+	var play_zoom = __webpack_require__(202);
+	var play_reset_zoom = __webpack_require__(203);
+	var play_reorder_row = __webpack_require__(205);
+	var play_reorder_buttons = __webpack_require__(206);
+	var play_search = __webpack_require__(208);
+	var play_filter = __webpack_require__(209);
+	var quick_cluster = __webpack_require__(232);
+	var play_groups = __webpack_require__(233);
+	var play_categories = __webpack_require__(234);
+	var play_conclusion = __webpack_require__(235);
+	var toggle_play_button = __webpack_require__(236);
+	var play_menu_button = __webpack_require__(237);
 
 	module.exports = function play_demo() {
 
@@ -23155,7 +23231,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 198 */
+/* 199 */
 /***/ (function(module, exports) {
 
 	
@@ -23177,10 +23253,10 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 199 */
+/* 200 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var demo_text = __webpack_require__(200);
+	var demo_text = __webpack_require__(201);
 
 	module.exports = function play_intro() {
 
@@ -23205,7 +23281,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 200 */
+/* 201 */
 /***/ (function(module, exports) {
 
 	module.exports = function demo_text(params, text, read_duration) {
@@ -23237,11 +23313,11 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 201 */
+/* 202 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var demo_text = __webpack_require__(200);
-	var two_translate_zoom = __webpack_require__(146);
+	var demo_text = __webpack_require__(201);
+	var two_translate_zoom = __webpack_require__(147);
 
 	module.exports = function play_zoom() {
 
@@ -23265,12 +23341,12 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 202 */
+/* 203 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var demo_text = __webpack_require__(200);
-	var two_translate_zoom = __webpack_require__(146);
-	var sim_click = __webpack_require__(203);
+	var demo_text = __webpack_require__(201);
+	var two_translate_zoom = __webpack_require__(147);
+	var sim_click = __webpack_require__(204);
 
 	module.exports = function play_reset_zoom() {
 
@@ -23296,7 +23372,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 203 */
+/* 204 */
 /***/ (function(module, exports) {
 
 	module.exports = function sim_click(params, single_double, pos_x, pos_y) {
@@ -23313,11 +23389,11 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 204 */
+/* 205 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var demo_text = __webpack_require__(200);
-	var sim_click = __webpack_require__(203);
+	var demo_text = __webpack_require__(201);
+	var sim_click = __webpack_require__(204);
 
 	module.exports = function play_reorder_row() {
 	  /* eslint-disable */
@@ -23379,11 +23455,11 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 205 */
+/* 206 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var demo_text = __webpack_require__(200);
-	var highlight_sidebar_element = __webpack_require__(206);
+	var demo_text = __webpack_require__(201);
+	var highlight_sidebar_element = __webpack_require__(207);
 
 	module.exports = function play_reorder_buttons() {
 	  /* eslint-disable */
@@ -23419,7 +23495,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 206 */
+/* 207 */
 /***/ (function(module, exports) {
 
 	module.exports = function highlight_sidebar_element(params, highlight_class, duration = 4000) {
@@ -23432,12 +23508,12 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 207 */
+/* 208 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var demo_text = __webpack_require__(200);
-	var highlight_sidebar_element = __webpack_require__(206);
-	var two_translate_zoom = __webpack_require__(146);
+	var demo_text = __webpack_require__(201);
+	var highlight_sidebar_element = __webpack_require__(207);
+	var two_translate_zoom = __webpack_require__(147);
 
 	module.exports = function play_search() {
 
@@ -23482,12 +23558,12 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 208 */
+/* 209 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var demo_text = __webpack_require__(200);
-	var highlight_sidebar_element = __webpack_require__(206);
-	var update_viz_with_view = __webpack_require__(209);
+	var demo_text = __webpack_require__(201);
+	var highlight_sidebar_element = __webpack_require__(207);
+	var update_viz_with_view = __webpack_require__(210);
 
 	module.exports = function play_filter() {
 
@@ -23546,12 +23622,12 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 209 */
+/* 210 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var make_network_using_view = __webpack_require__(11);
-	var disable_sidebar = __webpack_require__(210);
-	var update_viz_with_network = __webpack_require__(211);
+	var disable_sidebar = __webpack_require__(211);
+	var update_viz_with_network = __webpack_require__(212);
 	var underscore = __webpack_require__(3);
 
 	module.exports = function update_viz_with_view(cgm, requested_view) {
@@ -23579,7 +23655,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 210 */
+/* 211 */
 /***/ (function(module, exports) {
 
 	module.exports = function disable_sidebar(params) {
@@ -23589,25 +23665,25 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 211 */
+/* 212 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var make_params = __webpack_require__(10);
-	var define_enter_exit_delays = __webpack_require__(212);
-	var enter_exit_update = __webpack_require__(213);
-	var initialize_resizing = __webpack_require__(153);
-	var make_col_cat = __webpack_require__(185);
-	var make_row_cat = __webpack_require__(190);
-	var make_row_dendro = __webpack_require__(191);
-	var make_col_dendro = __webpack_require__(192);
-	var ini_sidebar = __webpack_require__(224);
-	var enable_sidebar = __webpack_require__(226);
-	var ini_doubleclick = __webpack_require__(163);
-	var update_reorder_buttons = __webpack_require__(227);
-	var make_row_cat_super_labels = __webpack_require__(152);
-	var modify_row_node_cats = __webpack_require__(228);
-	var run_zoom = __webpack_require__(155);
-	var ds_enter_exit_update = __webpack_require__(230);
+	var define_enter_exit_delays = __webpack_require__(213);
+	var enter_exit_update = __webpack_require__(214);
+	var initialize_resizing = __webpack_require__(154);
+	var make_col_cat = __webpack_require__(186);
+	var make_row_cat = __webpack_require__(191);
+	var make_row_dendro = __webpack_require__(192);
+	var make_col_dendro = __webpack_require__(193);
+	var ini_sidebar = __webpack_require__(225);
+	var enable_sidebar = __webpack_require__(227);
+	var ini_doubleclick = __webpack_require__(164);
+	var update_reorder_buttons = __webpack_require__(228);
+	var make_row_cat_super_labels = __webpack_require__(153);
+	var modify_row_node_cats = __webpack_require__(229);
+	var run_zoom = __webpack_require__(156);
+	var ds_enter_exit_update = __webpack_require__(231);
 	var make_cat_params = __webpack_require__(84);
 
 	module.exports = function update_viz_with_network(cgm, new_network_data) {
@@ -23750,7 +23826,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 212 */
+/* 213 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var underscore = __webpack_require__(3);
@@ -23815,19 +23891,19 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 213 */
+/* 214 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var reset_size_after_update = __webpack_require__(214);
-	var make_row_label_container = __webpack_require__(101);
-	var make_col_label_container = __webpack_require__(133);
-	var eeu_existing_row = __webpack_require__(215);
-	var exit_components = __webpack_require__(219);
+	var reset_size_after_update = __webpack_require__(215);
+	var make_row_label_container = __webpack_require__(102);
+	var make_col_label_container = __webpack_require__(134);
+	var eeu_existing_row = __webpack_require__(216);
+	var exit_components = __webpack_require__(220);
 	var draw_gridlines = __webpack_require__(91);
-	var enter_row_groups = __webpack_require__(220);
-	var resize_containers = __webpack_require__(223);
-	var label_constrain_and_trim = __webpack_require__(147);
-	var d3_tip_custom = __webpack_require__(100);
+	var enter_row_groups = __webpack_require__(221);
+	var resize_containers = __webpack_require__(224);
+	var label_constrain_and_trim = __webpack_require__(148);
+	var d3_tip_custom = __webpack_require__(101);
 
 	module.exports = function enter_exit_update(cgm, network_data, delays) {
 
@@ -23924,24 +24000,24 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 214 */
+/* 215 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var utils = __webpack_require__(2);
 	var calc_clust_height = __webpack_require__(74);
 	var get_svg_dim = __webpack_require__(71);
 	var calc_clust_width = __webpack_require__(73);
-	var reset_zoom = __webpack_require__(164);
-	var resize_dendro = __webpack_require__(165);
-	var resize_super_labels = __webpack_require__(166);
-	var resize_spillover = __webpack_require__(167);
-	var resize_row_labels = __webpack_require__(169);
-	var resize_row_viz = __webpack_require__(171);
-	var resize_col_labels = __webpack_require__(172);
-	var resize_col_text = __webpack_require__(173);
-	var resize_col_triangle = __webpack_require__(174);
-	var resize_col_hlight = __webpack_require__(175);
-	var resize_label_bars = __webpack_require__(178);
+	var reset_zoom = __webpack_require__(165);
+	var resize_dendro = __webpack_require__(166);
+	var resize_super_labels = __webpack_require__(167);
+	var resize_spillover = __webpack_require__(168);
+	var resize_row_labels = __webpack_require__(170);
+	var resize_row_viz = __webpack_require__(172);
+	var resize_col_labels = __webpack_require__(173);
+	var resize_col_text = __webpack_require__(174);
+	var resize_col_triangle = __webpack_require__(175);
+	var resize_col_hlight = __webpack_require__(176);
+	var resize_label_bars = __webpack_require__(179);
 	var calc_default_fs = __webpack_require__(83);
 	var calc_zoom_switching = __webpack_require__(82);
 	// var show_visible_area = require('../zoom/show_visible_area');
@@ -24114,15 +24190,15 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 215 */
+/* 216 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var exit_existing_row = __webpack_require__(216);
-	var enter_existing_row = __webpack_require__(217);
-	var update_split_tiles = __webpack_require__(218);
+	var exit_existing_row = __webpack_require__(217);
+	var enter_existing_row = __webpack_require__(218);
+	var update_split_tiles = __webpack_require__(219);
 	var mouseover_tile = __webpack_require__(97);
 	var mouseout_tile = __webpack_require__(98);
-	var fine_position_tile = __webpack_require__(99);
+	var fine_position_tile = __webpack_require__(100);
 	var underscore = __webpack_require__(3);
 
 	// TODO add tip back to arguments
@@ -24183,7 +24259,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 216 */
+/* 217 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var underscore = __webpack_require__(3);
@@ -24228,20 +24304,22 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 217 */
+/* 218 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var mouseover_tile = __webpack_require__(97);
 	var mouseout_tile = __webpack_require__(98);
-	var fine_position_tile = __webpack_require__(99);
+	var mouseclick_tile = __webpack_require__(99);
+	var fine_position_tile = __webpack_require__(100);
 
 	module.exports = function enter_existing_row(params, delays, duration, cur_row_tiles, tip) {
-
 	  // enter new tiles
 	  var new_tiles = cur_row_tiles.enter().append('rect').attr('class', 'tile row_tile').attr('width', params.viz.rect_width).attr('height', params.viz.rect_height).on('mouseover', function (...args) {
 	    mouseover_tile(params, this, tip, args);
 	  }).on('mouseout', function mouseout() {
 	    mouseout_tile(params, this, tip);
+	  }).on('click', function (...args) {
+	    mouseclick_tile(params, this, tip, args);
 	  }).attr('fill-opacity', 0).attr('transform', function (d) {
 	    return fine_position_tile(params, d);
 	  });
@@ -24271,14 +24349,14 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 218 */
+/* 219 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var draw_up_tile = __webpack_require__(95);
 	var draw_dn_tile = __webpack_require__(96);
 	var mouseover_tile = __webpack_require__(97);
 	var mouseout_tile = __webpack_require__(98);
-	var fine_position_tile = __webpack_require__(99);
+	var fine_position_tile = __webpack_require__(100);
 	var underscore = __webpack_require__(3);
 
 	module.exports = function update_split_tiles(params, inp_row_data, row_selection, delays, duration, cur_row_tiles, tip) {
@@ -24349,7 +24427,7 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 219 */
+/* 220 */
 /***/ (function(module, exports) {
 
 	module.exports = function exit_components(params, delays, duration) {
@@ -24411,10 +24489,10 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 220 */
+/* 221 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var enter_new_rows = __webpack_require__(221);
+	var enter_new_rows = __webpack_require__(222);
 
 	module.exports = function enter_row_groups(params, delays, duration, tip) {
 
@@ -24431,18 +24509,18 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 221 */
+/* 222 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var enter_split_tiles = __webpack_require__(222);
+	var enter_split_tiles = __webpack_require__(223);
 	var mouseover_tile = __webpack_require__(97);
 	var mouseout_tile = __webpack_require__(98);
-	var fine_position_tile = __webpack_require__(99);
+	var mouseclick_tile = __webpack_require__(99);
+	var fine_position_tile = __webpack_require__(100);
 	var underscore = __webpack_require__(3);
 
 	// make each row in the clustergram
 	module.exports = function enter_new_rows(params, ini_inp_row_data, delays, duration, tip, row_selection) {
-
 	  var inp_row_data = ini_inp_row_data.row_data;
 
 	  // remove zero values to make visualization faster
@@ -24458,6 +24536,8 @@ var Clustergrammer =
 	  // switch the color based on up/dn value
 	  .style('fill', function (d) {
 	    return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
+	  }).on('click', function (...args) {
+	    mouseclick_tile(params, this, tip, args);
 	  }).on('mouseover', function (...args) {
 	    mouseover_tile(params, this, tip, args);
 	  }).on('mouseout', function mouseout() {
@@ -24477,15 +24557,15 @@ var Clustergrammer =
 	  if (params.matrix.tile_type == 'updn') {
 	    enter_split_tiles(params, inp_row_data, row_selection, tip, delays, duration, tile);
 	  }
-		};
+	};
 
 /***/ }),
-/* 222 */
+/* 223 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var draw_up_tile = __webpack_require__(95);
 	var draw_dn_tile = __webpack_require__(96);
-	var fine_position_tile = __webpack_require__(99);
+	var fine_position_tile = __webpack_require__(100);
 	var underscore = __webpack_require__(3);
 
 	module.exports = function enter_split_tiles(params, inp_row_data, row_selection, tip, delays, duration, tile) {
@@ -24576,7 +24656,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 223 */
+/* 224 */
 /***/ (function(module, exports) {
 
 	module.exports = function resize_containers(params) {
@@ -24585,7 +24665,7 @@ var Clustergrammer =
 	  d3.select(params.root + ' .clust_container').attr('transform', 'translate(' + params.viz.clust.margin.left + ',' + params.viz.clust.margin.top + ')');
 
 	  // reposition col container
-	  d3.select(params.root + ' .col_label_outer_container').attr('transform', 'translate(0,' + params.viz.norm_labels.width.col + ')');
+	  d3.select(params.root + ' .col_label_outer_container').attr('transform', 'translate(-20,' + params.viz.norm_labels.width.col + ')');
 
 	  // reposition col_viz container
 	  d3.select(params.root + ' .col_cat_outer_container').attr('transform', function () {
@@ -24595,15 +24675,15 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 224 */
+/* 225 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* eslint-disable */
 
-	var change_groups = __webpack_require__(195);
-	var all_reorder = __webpack_require__(145);
-	var ini_cat_reorder = __webpack_require__(144);
-	var run_row_search = __webpack_require__(225);
+	var change_groups = __webpack_require__(196);
+	var all_reorder = __webpack_require__(146);
+	var ini_cat_reorder = __webpack_require__(145);
+	var run_row_search = __webpack_require__(226);
 	var underscore = __webpack_require__(3);
 
 	module.exports = function ini_sidebar(cgm) {
@@ -24700,10 +24780,10 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 225 */
+/* 226 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var two_translate_zoom = __webpack_require__(146);
+	var two_translate_zoom = __webpack_require__(147);
 	var underscore = __webpack_require__(3);
 
 	module.exports = function run_row_search(cgm, search_term, entities) {
@@ -24745,7 +24825,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 226 */
+/* 227 */
 /***/ (function(module, exports) {
 
 	module.exports = function enable_sidebar(params) {
@@ -24779,7 +24859,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 227 */
+/* 228 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var underscore = __webpack_require__(3);
@@ -24801,10 +24881,10 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 228 */
+/* 229 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var remove_node_cats = __webpack_require__(229);
+	var remove_node_cats = __webpack_require__(230);
 	var utils = __webpack_require__(2);
 	var underscore = __webpack_require__(3);
 
@@ -24899,7 +24979,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 229 */
+/* 230 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var underscore = __webpack_require__(3);
@@ -24921,13 +25001,13 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 230 */
+/* 231 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var reset_size_after_update = __webpack_require__(214);
-	var make_col_label_container = __webpack_require__(133);
-	var show_visible_area = __webpack_require__(136);
-	var resize_containers = __webpack_require__(223);
+	var reset_size_after_update = __webpack_require__(215);
+	var make_col_label_container = __webpack_require__(134);
+	var show_visible_area = __webpack_require__(137);
+	var resize_containers = __webpack_require__(224);
 
 	module.exports = function ds_enter_exit_update(cgm) {
 
@@ -24983,10 +25063,10 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 231 */
+/* 232 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var sim_click = __webpack_require__(203);
+	var sim_click = __webpack_require__(204);
 
 	module.exports = function quick_cluster() {
 	  /* eslint-disable */
@@ -25041,12 +25121,12 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 232 */
+/* 233 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var demo_text = __webpack_require__(200);
-	var highlight_sidebar_element = __webpack_require__(206);
-	var change_groups = __webpack_require__(195);
+	var demo_text = __webpack_require__(201);
+	var highlight_sidebar_element = __webpack_require__(207);
+	var change_groups = __webpack_require__(196);
 
 	module.exports = function play_groups() {
 	  /* eslint-disable */
@@ -25082,11 +25162,11 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 233 */
+/* 234 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var demo_text = __webpack_require__(200);
-	var sim_click = __webpack_require__(203);
+	var demo_text = __webpack_require__(201);
+	var sim_click = __webpack_require__(204);
 
 	module.exports = function play_category() {
 	  /* eslint-disable */
@@ -25134,11 +25214,11 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 234 */
+/* 235 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var demo_text = __webpack_require__(200);
-	var toggle_play_button = __webpack_require__(235);
+	var demo_text = __webpack_require__(201);
+	var toggle_play_button = __webpack_require__(236);
 
 	module.exports = function play_conclusion() {
 
@@ -25173,7 +25253,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 235 */
+/* 236 */
 /***/ (function(module, exports) {
 
 	module.exports = function toggle_play_button(params, show) {
@@ -25188,11 +25268,11 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 236 */
+/* 237 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var demo_text = __webpack_require__(200);
-	var sim_click = __webpack_require__(203);
+	var demo_text = __webpack_require__(201);
+	var sim_click = __webpack_require__(204);
 
 	module.exports = function play_menu_button() {
 	  /* eslint-disable */
@@ -25267,11 +25347,11 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 237 */
+/* 238 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var make_play_button = __webpack_require__(238);
-	var make_demo_text_containers = __webpack_require__(239);
+	var make_play_button = __webpack_require__(239);
+	var make_demo_text_containers = __webpack_require__(240);
 
 	module.exports = function ini_demo() {
 
@@ -25285,10 +25365,10 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 238 */
+/* 239 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var position_play_button = __webpack_require__(179);
+	var position_play_button = __webpack_require__(180);
 
 	module.exports = function make_play_button(cgm) {
 
@@ -25327,7 +25407,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 239 */
+/* 240 */
 /***/ (function(module, exports) {
 
 	module.exports = function make_demo_text_containers(params, demo_text_size) {
@@ -25366,11 +25446,11 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 240 */
+/* 241 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var filter_network_using_new_nodes = __webpack_require__(12);
-	var update_viz_with_network = __webpack_require__(211);
+	var update_viz_with_network = __webpack_require__(212);
 
 	module.exports = function filter_viz_using_nodes(new_nodes) {
 
@@ -25379,11 +25459,11 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 241 */
+/* 242 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var filter_network_using_new_nodes = __webpack_require__(12);
-	var update_viz_with_network = __webpack_require__(211);
+	var update_viz_with_network = __webpack_require__(212);
 	var underscore = __webpack_require__(3);
 
 	module.exports = function filter_viz_using_names(names, external_cgm = false) {
@@ -25447,13 +25527,13 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 242 */
+/* 243 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var make_row_cat = __webpack_require__(190);
+	var make_row_cat = __webpack_require__(191);
 	var calc_viz_params = __webpack_require__(67);
-	var resize_viz = __webpack_require__(154);
-	var modify_row_node_cats = __webpack_require__(228);
+	var resize_viz = __webpack_require__(155);
+	var modify_row_node_cats = __webpack_require__(229);
 
 	module.exports = function update_cats(cgm, cat_data) {
 
@@ -25483,14 +25563,14 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 243 */
+/* 244 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var make_row_cat = __webpack_require__(190);
+	var make_row_cat = __webpack_require__(191);
 	var calc_viz_params = __webpack_require__(67);
-	var resize_viz = __webpack_require__(154);
-	var modify_row_node_cats = __webpack_require__(228);
-	var generate_cat_data = __webpack_require__(244);
+	var resize_viz = __webpack_require__(155);
+	var modify_row_node_cats = __webpack_require__(229);
+	var generate_cat_data = __webpack_require__(245);
 
 	module.exports = function reset_cats(run_resize_viz = true) {
 
@@ -25524,7 +25604,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 244 */
+/* 245 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var underscore = __webpack_require__(3);
@@ -25734,11 +25814,11 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 245 */
+/* 246 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var update_viz_with_view = __webpack_require__(209);
-	var reset_other_filter_sliders = __webpack_require__(246);
+	var update_viz_with_view = __webpack_require__(210);
+	var reset_other_filter_sliders = __webpack_require__(247);
 
 	module.exports = function update_view(cgm, filter_type, inst_state) {
 
@@ -25753,10 +25833,10 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 246 */
+/* 247 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var make_filter_title = __webpack_require__(247);
+	var make_filter_title = __webpack_require__(248);
 	var underscore = __webpack_require__(3);
 
 	module.exports = function reset_other_filter_sliders(cgm, filter_type, inst_state) {
@@ -25806,7 +25886,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 247 */
+/* 248 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var get_filter_default_state = __webpack_require__(6);
@@ -25865,11 +25945,11 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 248 */
+/* 249 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var file_saver = __webpack_require__(249);
-	var make_matrix_string = __webpack_require__(250);
+	var file_saver = __webpack_require__(250);
+	var make_matrix_string = __webpack_require__(251);
 
 	module.exports = function save_matrix() {
 
@@ -25884,7 +25964,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 249 */
+/* 250 */
 /***/ (function(module, exports) {
 
 	module.exports = function file_saver() {
@@ -26099,10 +26179,10 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 250 */
+/* 251 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var make_full_name = __webpack_require__(251);
+	var make_full_name = __webpack_require__(252);
 	var underscore = __webpack_require__(3);
 
 	module.exports = function make_matrix_string(params) {
@@ -26184,7 +26264,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 251 */
+/* 252 */
 /***/ (function(module, exports) {
 
 	module.exports = function make_full_name(params, inst_node, inst_rc) {
@@ -26215,10 +26295,10 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 252 */
+/* 253 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var deactivate_cropping = __webpack_require__(253);
+	var deactivate_cropping = __webpack_require__(254);
 	var underscore = __webpack_require__(3);
 
 	module.exports = function brush_crop_matrix() {
@@ -26339,7 +26419,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 253 */
+/* 254 */
 /***/ (function(module, exports) {
 
 	module.exports = function deactivate_cropping(cgm) {
@@ -26350,7 +26430,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 254 */
+/* 255 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
@@ -26362,7 +26442,7 @@ var Clustergrammer =
 	(function (root, factory) {
 	  if (true) {
 	    // AMD. Register as an anonymous module.
-	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(255)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(256)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	  } else if (typeof exports === 'object') {
 	    if (process.browser) {
 	      // Browserify. Import css too using cssify.
@@ -26748,13 +26828,13 @@ var Clustergrammer =
 	});
 
 /***/ }),
-/* 255 */
+/* 256 */
 /***/ (function(module, exports) {
 
 	module.exports = d3;
 
 /***/ }),
-/* 256 */
+/* 257 */
 /***/ (function(module, exports) {
 
 	/**
@@ -27192,16 +27272,16 @@ var Clustergrammer =
 		})();
 
 /***/ }),
-/* 257 */
+/* 258 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(258);
+	var content = __webpack_require__(259);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(260)(content, {});
+	var update = __webpack_require__(261)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -27218,10 +27298,10 @@ var Clustergrammer =
 	}
 
 /***/ }),
-/* 258 */
+/* 259 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(259)();
+	exports = module.exports = __webpack_require__(260)();
 	// imports
 
 
@@ -27232,7 +27312,7 @@ var Clustergrammer =
 
 
 /***/ }),
-/* 259 */
+/* 260 */
 /***/ (function(module, exports) {
 
 	/*
@@ -27285,7 +27365,7 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 260 */
+/* 261 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*
@@ -27537,16 +27617,16 @@ var Clustergrammer =
 
 
 /***/ }),
-/* 261 */
+/* 262 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(262);
+	var content = __webpack_require__(263);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(260)(content, {});
+	var update = __webpack_require__(261)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -27563,10 +27643,10 @@ var Clustergrammer =
 	}
 
 /***/ }),
-/* 262 */
+/* 263 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(259)();
+	exports = module.exports = __webpack_require__(260)();
 	// imports
 
 
@@ -27577,18 +27657,18 @@ var Clustergrammer =
 
 
 /***/ }),
-/* 263 */
+/* 264 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var ini_sidebar = __webpack_require__(224);
-	var set_up_filters = __webpack_require__(264);
-	var set_up_search = __webpack_require__(269);
-	var set_up_reorder = __webpack_require__(270);
-	var set_sidebar_ini_view = __webpack_require__(271);
-	var make_icons = __webpack_require__(272);
-	var make_modals = __webpack_require__(274);
-	var set_up_opacity_slider = __webpack_require__(276);
-	var make_colorbar = __webpack_require__(277);
+	var ini_sidebar = __webpack_require__(225);
+	var set_up_filters = __webpack_require__(265);
+	var set_up_search = __webpack_require__(270);
+	var set_up_reorder = __webpack_require__(271);
+	var set_sidebar_ini_view = __webpack_require__(272);
+	var make_icons = __webpack_require__(273);
+	var make_modals = __webpack_require__(275);
+	var set_up_opacity_slider = __webpack_require__(277);
+	var make_colorbar = __webpack_require__(278);
 	var underscore = __webpack_require__(3);
 
 	/* Represents sidebar with controls.
@@ -27664,11 +27744,11 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 264 */
+/* 265 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var make_slider_filter = __webpack_require__(265);
-	var make_button_filter = __webpack_require__(268);
+	var make_slider_filter = __webpack_require__(266);
+	var make_button_filter = __webpack_require__(269);
 
 	module.exports = function set_up_filters(cgm, filter_type) {
 
@@ -27684,14 +27764,14 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 265 */
+/* 266 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var make_filter_title = __webpack_require__(247);
-	var run_filter_slider = __webpack_require__(266);
+	var make_filter_title = __webpack_require__(248);
+	var run_filter_slider = __webpack_require__(267);
 	var get_filter_default_state = __webpack_require__(6);
 	var get_subset_views = __webpack_require__(64);
-	d3.slider = __webpack_require__(254);
+	d3.slider = __webpack_require__(255);
 	var underscore = __webpack_require__(3);
 
 	module.exports = function make_slider_filter(cgm, filter_type, div_filters) {
@@ -27762,12 +27842,12 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 266 */
+/* 267 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var update_viz_with_view = __webpack_require__(209);
-	var reset_other_filter_sliders = __webpack_require__(246);
-	var get_current_orders = __webpack_require__(267);
+	var update_viz_with_view = __webpack_require__(210);
+	var reset_other_filter_sliders = __webpack_require__(247);
+	var get_current_orders = __webpack_require__(268);
 	var make_requested_view = __webpack_require__(66);
 	var underscore = __webpack_require__(3);
 
@@ -27801,7 +27881,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 267 */
+/* 268 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var underscore = __webpack_require__(3);
@@ -27832,7 +27912,7 @@ var Clustergrammer =
 	};
 
 /***/ }),
-/* 268 */
+/* 269 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// var update_network = require('../network/update_network');
@@ -27883,7 +27963,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 269 */
+/* 270 */
 /***/ (function(module, exports) {
 
 	module.exports = function set_up_search(sidebar, params) {
@@ -27898,7 +27978,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 270 */
+/* 271 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// var get_cat_title = require('../categories/get_cat_title');
@@ -27990,10 +28070,10 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 271 */
+/* 272 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var make_filter_title = __webpack_require__(247);
+	var make_filter_title = __webpack_require__(248);
 	var underscore = __webpack_require__(3);
 
 	module.exports = function set_sidebar_ini_view(params) {
@@ -28029,13 +28109,13 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 272 */
+/* 273 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var file_saver = __webpack_require__(249);
-	var two_translate_zoom = __webpack_require__(146);
-	var deactivate_cropping = __webpack_require__(253);
-	var save_svg_png = __webpack_require__(273);
+	var file_saver = __webpack_require__(250);
+	var two_translate_zoom = __webpack_require__(147);
+	var deactivate_cropping = __webpack_require__(254);
+	var save_svg_png = __webpack_require__(274);
 
 	module.exports = function make_icons(cgm, sidebar) {
 
@@ -28144,7 +28224,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 273 */
+/* 274 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;(function () {
@@ -28619,10 +28699,10 @@ var Clustergrammer =
 		})();
 
 /***/ }),
-/* 274 */
+/* 275 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var make_modal_skeleton = __webpack_require__(275);
+	var make_modal_skeleton = __webpack_require__(276);
 
 	module.exports = function ini_modals(params) {
 
@@ -28656,7 +28736,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 275 */
+/* 276 */
 /***/ (function(module, exports) {
 
 	module.exports = function make_modal_skeleton(params, modal_class) {
@@ -28679,7 +28759,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 276 */
+/* 277 */
 /***/ (function(module, exports) {
 
 	module.exports = function set_up_opacity_slider(sidebar) {
@@ -28692,7 +28772,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 277 */
+/* 278 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var underscore = __webpack_require__(3);
