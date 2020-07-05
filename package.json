@@ -4,7 +4,8 @@
   "description": "This is a clustergram implemented in D3.js. I started from the example http://bost.ocks.org/mike/miserables/ and added the following features",
   "main": "clustergrammer.node.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "webpack",
+    "develop": "NODE_ENV=development webpack -w"
   },
   "repository": {
     "type": "git",
